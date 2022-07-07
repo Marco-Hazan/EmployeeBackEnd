@@ -1,5 +1,8 @@
 package com.accenture.ProgettoImpiegati.model;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.UpdateTimestamp;
 
 
 /*
@@ -35,7 +40,11 @@ public class Employee {
     private String firstName;
     private String lastName;
     private String emailId;
- 
+    private LocalDate dataNascita;
+    private LocalDateTime ultimoAggiornamento;
+    private boolean follow;
+    
+    
     public Employee() {
   
     }
@@ -80,7 +89,37 @@ public class Employee {
         this.emailId = emailId;
     }
 
-    @Override
+    @Column(name = "data_nascita", nullable = false)
+    public LocalDate getDataNascita() {
+		return dataNascita;
+	}
+    
+    @UpdateTimestamp
+    @Column(name = "ultimo_aggiornamento",nullable = true)
+    public LocalDateTime getUltimoAggiornamento() {
+    	return ultimoAggiornamento;
+    }
+    
+    
+
+	public void setDataNascita(LocalDate dataNascita) {
+		this.dataNascita = dataNascita;
+	}
+
+	public void setUltimoAggiornamento(LocalDateTime ultimoAggiornamento) {
+		this.ultimoAggiornamento = ultimoAggiornamento;
+	}
+
+	@Column(name = "follow",columnDefinition = "boolean default false")
+	public boolean isFollow() {
+		return follow;
+	}
+
+	public void setFollow(boolean follow) {
+		this.follow = follow;
+	}
+
+	@Override
     public String toString() {
         return "Employee [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", emailId=" + emailId
        + "]";

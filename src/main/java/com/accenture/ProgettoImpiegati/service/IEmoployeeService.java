@@ -4,7 +4,8 @@ package com.accenture.ProgettoImpiegati.service;
 
 import java.util.List;
 
-import com.accenture.ProgettoImpiegati.model.Employee;
+import com.accenture.ProgettoImpiegati.dto.request.EmployeeRequestDto;
+import com.accenture.ProgettoImpiegati.dto.response.EmployeeResponseDto;
 
  
 
@@ -12,12 +13,14 @@ import com.accenture.ProgettoImpiegati.model.Employee;
 
 public interface IEmoployeeService {
 
-	public List<Employee> getEmployees();
+	public List<EmployeeResponseDto> getEmployees();
 
-	public Employee saveEmployee(Employee theEmployee);
+	public EmployeeResponseDto saveEmployee(EmployeeRequestDto theEmployee);
 
-	public Employee getEmployee(Long theId);
+	public EmployeeResponseDto getEmployee(Long theId);
 
 	public void deleteEmployee(Long theId);
+
+	EmployeeResponseDto updateEmployee(EmployeeRequestDto theEmployee, Long id);
 	
 }

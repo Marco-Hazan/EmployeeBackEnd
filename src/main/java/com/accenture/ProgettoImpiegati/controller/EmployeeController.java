@@ -22,12 +22,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException.BadRequest;
 
+import com.accenture.ProgettoImpiegati.dto.request.EmployeeRequestDto;
+import com.accenture.ProgettoImpiegati.dto.response.EmployeeResponseDto;
 import com.accenture.ProgettoImpiegati.exceptions.BadUserException;
 import com.accenture.ProgettoImpiegati.exceptions.EmployeeNotFoundException;
 import com.accenture.ProgettoImpiegati.exceptions.ErrorDetails;
 import com.accenture.ProgettoImpiegati.exceptions.ResourceNotFoundException;
 import com.accenture.ProgettoImpiegati.model.Employee;
 import com.accenture.ProgettoImpiegati.service.EmployeeService;
+import com.accenture.ProgettoImpiegati.utils.MapperDtoEntity;
 /*
  * 
  * json ok
@@ -50,15 +53,15 @@ public class EmployeeController extends BaseController{
 	private EmployeeService employeeService;
 
 	@GetMapping("/employees")
-	public List<Employee> getAllEmployees() {
+	public List<EmployeeResponseDto> getAllEmployees() {
 		return employeeService.getEmployees();
 	}
 
 	@GetMapping("/employees/{id}")
-	public ResponseEntity<Employee> getEmployeeById(@PathVariable(value = "id") Long employeeId
+	public ResponseEntity<EmployeeResponseDto> getEmployeeById(@PathVariable(value = "id") Long employeeId
 			)
 					throws ResourceNotFoundException {
-		Employee employee = employeeService.getEmployee(employeeId);
+		EmployeeResponseDto employee = employeeService.getEmployee(employeeId);
 		if(employee == null) {
 			throw new EmployeeNotFoundException("Nessun utente trovato");
 		}
@@ -68,10 +71,10 @@ public class EmployeeController extends BaseController{
 
 	//http://localhost:8080/ProgettoImpiegatiApplication/api/v1/employees
 	@PostMapping("/employees")
-	public Employee createEmployee(@Valid @RequestBody Employee employee) {
+	public EmployeeResponseDto createEmployee(@Valid @RequestBody EmployeeRequestDto employee) {
 		String regex = "^(.+)@(.+)$";
 		Pattern pattern = Pattern.compile(regex);
-		Employee emp = null;	
+		EmployeeResponseDto emp = null;	
 //		try {
 //			if (bindingResult.hasErrors()) {
 //				logger.debug("Errore nella validazione form");
@@ -99,12 +102,13 @@ public class EmployeeController extends BaseController{
 	 
 
 	@PutMapping("/employees/{id}")
-	public ResponseEntity<Employee> updateEmployee(@PathVariable(value = "id") Long employeeId,
-			@Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException {
+	public ResponseEntity<EmployeeResponseDto> updateEmployee(@PathVariable(value = "id") Long employeeId,
+			@Valid @RequestBody EmployeeRequestDto employeeDetails) throws ResourceNotFoundException {
 		String regex = "^(.+)@(.+)$";
 		Pattern pattern = Pattern.compile(regex);
-		Employee employee = employeeService.getEmployee(employeeId);
-		if(employee == null) {
+		//EmployeeResponseDto employee = employeeService.getEmployee(employeeId);
+		EmployeeResponseDto updatedEmployee = employeeService.updateEmployee(employeeDetails, employeeId);
+		if(updatedEmployee == null) {
 			throw new EmployeeNotFoundException("Nessun utente trovato");
 		}
 		if(
@@ -114,10 +118,10 @@ public class EmployeeController extends BaseController{
 		) {
 			throw new BadUserException("I dati dell'utente sono incorretti");
 		}
-		employee.setEmailId(employeeDetails.getEmailId());
+		/*employee.setEmailId(employeeDetails.getEmailId());
 		employee.setLastName(employeeDetails.getLastName());
 		employee.setFirstName(employeeDetails.getFirstName());
-		final Employee updatedEmployee = employeeService.saveEmployee(employee);
+		final EmployeeResponseDto updatedEmployee = employeeService.saveEmployee(employee);*/
 		return ResponseEntity.ok(updatedEmployee);
 	}
 
