@@ -45,7 +45,7 @@ import com.accenture.ProgettoImpiegati.utils.MapperDtoEntity;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/v1")
 public class EmployeeController extends BaseController{
 	

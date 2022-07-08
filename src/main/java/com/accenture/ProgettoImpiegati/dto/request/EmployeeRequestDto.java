@@ -53,11 +53,11 @@ public class EmployeeRequestDto {
 		this.dataNascita = dataNascita;
 	}
 
-	public boolean isSeguito() {
+	public boolean isFollow() {
 		return follow;
 	}
 
-	public void setSeguito(boolean follow) {
+	public void setFollow(boolean follow) {
 		this.follow = follow;
 	}
     
